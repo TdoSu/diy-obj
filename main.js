@@ -16,6 +16,24 @@ function test() {
     getProperty(wfb, 'sayHello')()
 }
 
+/* TODO: 实现一个 logObject(wfb)
+ *  {
+ *       name: 'weifubao',
+ *       sayHello: function() {},
+ *  }
+ *  提示: 先实现一个 getKeys 函数
+ * */
+function logObject(o) {
+    //
+    log('o')
+}
+
+/* TODO: 扩展 makeObject 可以通过字面量设置属性
+ *   makeObject(`{
+ *        name: 'weifubao',
+ *        sayHello: function() {},
+ *   }`)
+ * */
 function makeObject() {
     var o = makeList()
     function getProperty(p) {
@@ -64,11 +82,19 @@ function makeObject() {
     return z
 }
 
+/*
+ * TODO: 添加属性描述, 实现 defineProperty 功能
+ * */
 function setProperty(o, p, v) {
     //
     return o('setProperty')(p, v)
 }
 
+/*
+ * TODO: 添加一个 setPrototype 函数
+ *  支持设置 object 的原型
+ *  扩展 getProperty 提供原型功能
+ * */
 function getProperty(o, p) {
     //
     return o('getProperty')(p)
@@ -147,6 +173,7 @@ function cdr(z) {
 }
 
 function bind(fn, value) {
+    // 这里用到了展开运算符, 有些作弊, 考虑用 curry 改写
     return function(...args) {
         return fn(value, ...args)
     }

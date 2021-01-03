@@ -8,12 +8,17 @@ function test() {
     log(`-----------------------------------${ new Date().toLocaleTimeString() }`)
     const wfb = makeObject()
     setProperty(wfb, 'name', 'weifubao')
-    setProperty(wfb, 'sayHello', function(that) {
-        log(`hello, i'm ${ getProperty(that, 'name') }`)
+    // setProperty(wfb, 'sayHello', function(that, symbol) {
+    //     log(`hello, i'm ${ getProperty(that, 'name') }${ symbol }`)
+    // })
+    setProperty(wfb, 'sayHello', function (that) {
+        return function (symbol) {
+            log(`hello, i'm ${ getProperty(that, 'name') }${ symbol }`)
+        }
     })
-    getProperty(wfb, 'sayHello')()
+    getProperty(wfb, 'sayHello')('!')
     setProperty(wfb, 'name', 'baobao')
-    getProperty(wfb, 'sayHello')()
+    getProperty(wfb, 'sayHello')('.')
 }
 
 /* TODO: 实现一个 logObject(wfb)
@@ -43,7 +48,8 @@ function makeObject() {
         var value = refList(target, 1)
         return typeof value === 'function'
             // ? value.bind(null, z)
-            ? bind(value, z)
+            // ? bind(value, z)
+            ? value(z)
             : value
     }
     function setProperty(p, v) {

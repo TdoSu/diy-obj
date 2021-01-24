@@ -12,25 +12,32 @@ function test() {
     //     log(`hello, i'm ${ getProperty(that, 'name') }${ symbol }`)
     // })
     setProperty(wfb, 'sayHello', function (that) {
-        return function (symbol) {
-            log(`hello, i'm ${ getProperty(that, 'name') }${ symbol }`)
+        return function (endSymbol) {
+            log(`hello, i'm ${ getProperty(that, 'name') }${ endSymbol }`)
         }
     })
     getProperty(wfb, 'sayHello')('!')
     setProperty(wfb, 'name', 'baobao')
     getProperty(wfb, 'sayHello')('.')
+    logObject(wfb)
 }
 
 /* TODO: 实现一个 logObject(wfb)
  *  {
  *       name: 'weifubao',
  *       sayHello: function() {},
+ *       // function 本身的词法作用域不太好办
  *  }
  *  提示: 先实现一个 getKeys 函数
  * */
 function logObject(o) {
     //
-    log('o')
+    log('o keys:', getKeys(o))
+}
+
+function getKeys(o) {
+    //
+    return o('getKeys')
 }
 
 /* TODO: 扩展 makeObject 可以通过字面量设置属性
@@ -76,11 +83,15 @@ function makeObject() {
             o = pushList(o, newValue)
         }
     }
+    function getKeys() {
+    }
     function z(m) {
         if (m === 'setProperty') {
             return setProperty
         } else if (m === 'getProperty') {
             return getProperty
+        } else if (m === 'getKeys') {
+            return getKeys
         } else {
             throw new Error('对不起没有这个方法')
         }
